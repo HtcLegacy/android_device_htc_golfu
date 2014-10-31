@@ -57,6 +57,19 @@ TARGET_KERNEL_CONFIG := golfu_defconfig
 BOARD_KERNEL_CMDLINE := no_console_suspend=1 console=null
 BOARD_KERNEL_BASE := 0x13000000
 
+KERNEL_EXTERNAL_MODULES:
+	mkdir -p $(KERNEL_MODULES_OUT)/ath6kl
+	rm -rf $(TARGET_OUT_INTERMEDIATES)/compat-wireless
+	cp -a device/htc/golfu/compat-wireless $(TARGET_OUT_INTERMEDIATES)/
+	$(MAKE) -C $(TARGET_OUT_INTERMEDIATES)/compat-wireless KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
+	rm $(KERNEL_MODULES_OUT)/cfg80211.ko
+	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/cfg80211.ko $(KERNEL_MODULES_OUT)/ath6kl/cfg80211.ko
+	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/wlan.ko $(KERNEL_MODULES_OUT)/ath6kl/ath6kl_sdio.ko
+	ln -sf /system/lib/modules/ath6kl/cfg80211.ko $(KERNEL_MODULES_OUT)/cfg80211.ko
+	ln -sf /system/lib/modules/ath6kl/ath6kl_sdio.ko $(KERNEL_MODULES_OUT)/wlan.ko
+
+TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
+
 TARGET_SPECIFIC_HEADER_PATH := device/htc/golfu/include
 
 # Audio
@@ -87,21 +100,24 @@ BOARD_HAVE_BLUETOOTH := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/htc/golfu/bluetooth
 
 # Wi-Fi
-BOARD_HAS_ATH_WLAN := true
-#TARGET_CUSTOM_WIFI := ../../device/htc/golfu/libhardware_legacy/wifi/wifi.c
+BOARD_HAS_ATH_WLAN          := true
 BOARD_WLAN_DEVICE := ath6kl
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
-BOARD_HOSTAPD_DRIVER := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
-WPA_SUPPLICANT_VERSION := VER_0_8_X
-HOSTAPD_VERSION := VER_0_8_X
-WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/ath6kl_sdio.ko"
-WIFI_DRIVER_MODULE_NAME := "ath6kl_sdio"
-WIFI_DRIVER_MODULE_ARG := "suspend_mode=3 wow_mode=2 debug_mask=0xffffffff"
-WIFI_EXT_MODULE_PATH := "/system/lib/modules/cfg80211.ko"
-WIFI_EXT_MODULE_NAME := "cfg80211"
-WIFI_EXT_MODULE_ARG := ""
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
+BOARD_HOSTAPD_DRIVER        := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_ath6kl
+WPA_SUPPLICANT_VERSION      := VER_0_8_X
+HOSTAPD_VERSION             := VER_0_8_X
+WIFI_EXT_MODULE_PATH        := "/system/lib/modules/cfg80211.ko"
+WIFI_EXT_MODULE_NAME        := "cfg80211"
+WIFI_EXT_MODULE_ARG         := ""
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME     := "wlan"
+WIFI_DRIVER_MODULE_ARG      := ""
+WIFI_TEST_INTERFACE         := "sta"
+WIFI_DRIVER_FW_PATH_STA     := "sta"
+WIFI_DRIVER_FW_PATH_AP      := "ap"
+WIFI_DRIVER_FW_PATH_P2P     := "p2p"
 
 # Video
 TARGET_QCOM_LEGACY_OMX := true 
