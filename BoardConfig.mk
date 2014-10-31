@@ -108,12 +108,12 @@ BOARD_HOSTAPD_DRIVER        := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_ath6kl
 WPA_SUPPLICANT_VERSION      := VER_0_8_X
 HOSTAPD_VERSION             := VER_0_8_X
+WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/ath6kl.ko"
+WIFI_DRIVER_MODULE_NAME     := "ath6kl"
+WIFI_DRIVER_MODULE_ARG      := "suspend_mode=3 wow_mode=2 debug_mask=0xffffffff"
 WIFI_EXT_MODULE_PATH        := "/system/lib/modules/cfg80211.ko"
 WIFI_EXT_MODULE_NAME        := "cfg80211"
 WIFI_EXT_MODULE_ARG         := ""
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/wlan.ko"
-WIFI_DRIVER_MODULE_NAME     := "wlan"
-WIFI_DRIVER_MODULE_ARG      := ""
 WIFI_TEST_INTERFACE         := "sta"
 WIFI_DRIVER_FW_PATH_STA     := "sta"
 WIFI_DRIVER_FW_PATH_AP      := "ap"
