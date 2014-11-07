@@ -2,15 +2,19 @@
 TARGET_SCREEN_HEIGHT := 320
 TARGET_SCREEN_WIDTH  := 480
 
-# Inherit some common CM stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+# Include GSM stuff
+$(call inherit-product, vendor/omni/config/gsm.mk)
+
+# Inherit some common stuff.
+$(call inherit-product, vendor/omni/config/common.mk)
+$(call inherit-product, device/common/gps/gps_eu_supl.mk)
 
 # Inherit device configuration
-$(call inherit-product, device/htc/golfu/golfu.mk)
+$(call inherit-product, device/htc/golfu/full_golfu.mk)
 
 # Product name
 PRODUCT_DEVICE := golfu
-PRODUCT_NAME := cm_golfu
+PRODUCT_NAME := omni_golfu
 PRODUCT_BRAND := htc_europe
 PRODUCT_MODEL := HTC Desire C
 PRODUCT_MANUFACTURER := HTC
