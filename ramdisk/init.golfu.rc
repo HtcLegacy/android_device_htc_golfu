@@ -5,11 +5,15 @@ on early-init
 
 on init
     mkdir /mnt/media_rw/sdcard0 0700 media_rw media_rw
+    mkdir /mnt/media_rw/usbdisk0 0700 media_rw media_rw
     mkdir /storage/sdcard0 0700 root root
+    mkdir /storage/usbdisk0 0700 root root
     export EXTERNAL_STORAGE /storage/sdcard0
     # for backwards compatibility
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
+    symlink /storage/usbdisk0 /mnt/usbdisk
+    symlink /storage/usbdisk0 /usbdisk
 
 on fs
     # mount mmc partitions
@@ -187,13 +191,13 @@ on boot
 on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
     
-#service rmt_storage /system/bin/rmt_storage
-#    class core
-#    user root
-#    disabled
+service rmt_storage /system/bin/rmt_storage
+    class core
+    user root
+    disabled
 
-#on property:ro.boot.emmc=true
-#    start rmt_storage
+on property:ro.boot.emmc=true
+    start rmt_storage
 
 #service netmgrd /system/bin/netmgrd
 #    class late_start
@@ -300,5 +304,9 @@ service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
 #    start modem
     
 service fuse_sdcard0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard0 /storage/sdcard0
+    class late_start
+    disabled
+    
+service fuse_usbdisk0 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk0 /storage/usbdisk0
     class late_start
     disabled
