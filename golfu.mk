@@ -36,7 +36,7 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
-    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissionsandroid.hardware.sensor.accelerometer.xml \
+    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
     frameworks/base/nfc-extras/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
@@ -69,6 +69,10 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.mobiledata=false \
     ro.com.android.dataroaming=false
+
+#Set SELinux to permissive
+PRODUCT_PROPERTY_OVERRIDES += \
+ro.boot.selinux=permissive
     
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.adb.secure=0 \

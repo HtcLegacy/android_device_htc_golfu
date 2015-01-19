@@ -78,6 +78,12 @@ media.stagefright.enable-qcp=true
 media.stagefright.enable-meta=false
 persist.sys.media.use-awesome=true
 
+#Camera
+camera2.portability.force_api=1
+
+# Disable atlas services on low-ram targets
+config.disable_atlas=true
+
 # Memory
 ro.config.low_ram=true
 ro.sys.fw.bg_apps_limit=7
