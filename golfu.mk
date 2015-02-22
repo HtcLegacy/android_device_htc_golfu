@@ -72,7 +72,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 #Set SELinux to permissive
 PRODUCT_PROPERTY_OVERRIDES += \
-ro.boot.selinux=permissive
+    ro.boot.selinux=permissive
+    
+# Disable bootanimation sound
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.silent=1    
     
 ADDITIONAL_DEFAULT_PROPERTIES += \
     ro.adb.secure=0 \
